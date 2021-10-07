@@ -17,15 +17,11 @@ namespace Visualization
         private Object loadedPrefab;
         
 
-        private Dictionary<IBaseHologramObject, ToolTip> hologramObjectTooltipsMap =
+        private readonly Dictionary<IBaseHologramObject, ToolTip> hologramObjectTooltipsMap =
             new Dictionary<IBaseHologramObject, ToolTip>();
-        protected override IVisualSettings visualSettings
-        {
-            get => (IVisualSettings) tooltipSettings ?? Settings.Instance.StaticTooltipSettings;
-            set => SetVisualSettings(value);
-        }
 
-        private ITooltipSettings tooltipSettings;
+        protected override ITooltipSettings staticVisualSettings => Settings.Instance.StaticTooltipSettings;
+
 
         private void Start()
         {
@@ -56,11 +52,6 @@ namespace Visualization
 #endif
         }
 
-        public override void SetVisualSettings(IVisualSettings settings)
-        {
-            tooltipSettings = settings as ITooltipSettings;
-        }
-
         protected override void ChangeState(IVisibleObject visibleObject, ITooltipSettings settings, VisibleCondition targetCondition)
         {
             if (!(visibleObject is IBaseHologramObject hologramObject))
@@ -88,6 +79,7 @@ namespace Visualization
             {
                 visibleObject.VisibleCondition = VisibleCondition.Invisible;
                 visibleObject.VisualizationAction -= TurnOffVisualization;
+                Visualizer?.SetInvisible(visibleObject);
                 return;
             }
 
@@ -105,6 +97,7 @@ namespace Visualization
             connector.PivotDistance = settings.ConnectorPivotDistance;
             visibleObject.VisibleCondition = VisibleCondition.Visible;
             visibleObject.VisualizationAction -= TurnOnVisualization;
+            Visualizer?.SetVisible(visibleObject);
         }
     }
 }

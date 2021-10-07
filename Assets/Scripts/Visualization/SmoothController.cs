@@ -37,20 +37,25 @@ namespace Visualization
                 return;
             }
 
-            if (childVisualizer)
-            {
-                SmoothAlphaVisualizer.Instance.Decorate(childVisualizer, childVisualizer.VisualSettings);
-            }
 
             foreach (var hologram in objectCreator.ContainedBaseHologramObjects)
             {
                 if (currentVisibleCondition == VisibleCondition.Visible)
                 {
-                    SmoothAlphaVisualizer.Instance.SetVisible(hologram, SmoothAlphaVisualizer.Instance.VisualSettings);
+                    if (childVisualizer)
+                    {
+                        SmoothAlphaVisualizer.Instance.Decorate(childVisualizer, hologram as IVisibleObject, default(ISmoothSettings));
+                    }
+
+                    SmoothAlphaVisualizer.Instance.SetVisible(hologram);
                 }
                 else
                 {
-                    SmoothAlphaVisualizer.Instance.SetInvisible(hologram, SmoothAlphaVisualizer.Instance.VisualSettings);
+                    if (childVisualizer)
+                    {
+                        SmoothAlphaVisualizer.Instance.Decorate(childVisualizer, hologram as IVisibleObject, default(ISmoothSettings));
+                    }
+                    SmoothAlphaVisualizer.Instance.SetInvisible(hologram);
                 }
             }
         }

@@ -7,5 +7,4 @@ using Visualization;
 
 public class HologramController: Singleton<HologramController>
 {
-    public IVisualizer HologramObjectsSmoothAlpha { get; set; }
 }

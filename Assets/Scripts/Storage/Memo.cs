@@ -8,6 +8,7 @@ namespace Storage
     {
         public string Id { get; }
         public string Name { get; }
+        public string HologramName { get; }
         public float PosX { get; }
         public float PosY { get; }
         public float PosZ { get; }
@@ -32,12 +33,14 @@ namespace Storage
             baseObject.UpdateObject(
                 new HologramData(
                     baseObject.HologramData.PrefabName, 
-                    baseObject.HologramData.Id,
+                    baseObject.HologramData.Id, 
+                    baseObject.HologramData.HologramName,
                     spatialData, 
                     baseObject.HologramData.RendererData));
 
             Id = baseObject.HologramData.Id;
             Name = baseObject.HologramData.PrefabName;
+            HologramName = baseObject.HologramData.HologramName;
            
             PosX = baseObject.HologramData.SpatialData.Position.x;
             PosY = baseObject.HologramData.SpatialData.Position.y;

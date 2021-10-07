@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DataScripts;
 using Serialization;
 using UnityEngine;
@@ -13,10 +14,15 @@ namespace Storage
 
         public virtual void Save()
         {
-            if (enabled)
+            if (!enabled)
             {
-                Serializator.Serialization(Data.Instance.AllBaseHologramObjects);
+                return;
             }
+            foreach (var baseHologramObjectContainer in baseHologramObjectContainers)
+            {
+                Serializator.Serialization(baseHologramObjectContainer.Id, baseHologramObjectContainer.ContainedIds.ToArray());    
+            }
+            Serializator.Serialization(Data.Instance.AllBaseHologramObjects);
         }
 
         public virtual void Load()
@@ -54,7 +60,7 @@ namespace Storage
                 foreach (var containedId in containedIds)
                 {
                     var baseHologramObject = baseHologramContainer.RestoreHologramObjectEvent(memoIdMap[containedId]);
-                    Data.Instance.AddNewBaseHologramObject(baseHologramObject);
+                    Data.Instance.AddHologramObject(baseHologramObject);
                 }
             }
         }

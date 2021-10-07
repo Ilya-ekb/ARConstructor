@@ -1,30 +1,22 @@
 using DataScripts;
 using LogicScripts;
 
-public class Scenario
+namespace LogicScripts
 {
-    protected int scenarioState;
-
-    public Scenario()
+    public abstract class Scenario
     {
-        Data.Logic = new Logic();
-        scenarioState = 0;
-        Data.Logic.scenario = this;
-    }
+        protected int scenarioState;
 
-    public virtual void StartScenario(params object[] p) { }
-    public virtual void GoToDasboard(params object[] p) { }
-    public virtual void ShuntingLightNotOpen(params object[] p) { }
-    public virtual void ShuntingLightM3(params object[] p) { }
-    public virtual void WayPointer(params object[] p) { }
-    public virtual void ButtonNo(params object[] p) { }
-    public virtual void ButtonYes(params object[] p) { }
-    public virtual void LightEndWay(params object[] p) { }
-    public virtual void WhiteLine(params object[] p) { }
-    public virtual void AllowTrafficLightDuplicate(params object[] p) { }
-    public virtual void TakeMultimeter(params object[] p) { }
-    public virtual void VoltageMeasure(params object[] p) { }
-    public virtual void FindDashboard(params object[] p) { }
-    public virtual void FindModuls(params object[] p) { }
-    public virtual void Result(params object[] p) { }
+        protected Scenario()
+        {
+            scenarioState = 0;
+            Logic.Instance.scenario = this;
+        }
+
+        public abstract void StartScenario(params object[] p);
+        public abstract void CheckCoffee(params object[] p);
+        public abstract void Refuel(params object[] p);
+        public abstract void ButtonNo(params object[] p);
+        public abstract void ButtonYes(params object[] p);
+    }
 }

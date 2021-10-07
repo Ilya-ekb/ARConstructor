@@ -7,18 +7,7 @@ namespace Visualization
 {
     public class SmoothAlphaVisualizer : BaseVisualizer<ISmoothSettings>
     {
-        protected override IVisualSettings visualSettings
-        {
-            get => (IVisualSettings) smoothSettings ?? Settings.Instance.HologramVisualizationSmoothAlpha;
-            set => SetVisualSettings(value);
-        }
-
-        private ISmoothSettings smoothSettings;
-
-        public override void SetVisualSettings(IVisualSettings settings)
-        {
-            smoothSettings = settings as ISmoothSettings;
-        }
+        protected override ISmoothSettings staticVisualSettings => Settings.Instance.HologramVisualizationSmoothAlpha;
 
         protected override void ChangeState(IVisibleObject visibleObject, ISmoothSettings settings, VisibleCondition targetCondition)
         {
@@ -51,21 +40,20 @@ namespace Visualization
                 {
                     visibleObject.VisibleCondition = VisibleCondition.Visible;
                     visibleObject.VisualizationAction -= TurnOnVisualization;
-                    Visualizer?.SetVisible(visibleObject, Visualizer.VisualSettings);
-
+                    Visualizer?.SetVisible(visibleObject);
                 }
                 else
                 {
                     visibleObject.VisibleCondition = VisibleCondition.Invisible;
                     visibleObject.VisualizationAction -= TurnOffVisualization;
-                    Visualizer?.SetInvisible(visibleObject, Visualizer.VisualSettings);
+                    Visualizer?.SetInvisible(visibleObject);
                 }
 
             }
 
             rendererData.Color = color;
 
-            data = new HologramData(data.PrefabName, data.Id, data.SpatialData, rendererData);
+            data = new HologramData(data.PrefabName, data.Id, data.HologramName, data.SpatialData, rendererData);
             baseHologram.UpdateObject(data);
         }
     }

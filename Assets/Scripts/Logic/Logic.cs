@@ -7,12 +7,14 @@ using UnityEngine;
 
 namespace LogicScripts
 {
-    public class Logic : MonoBehaviour
+    public class Logic : Singleton<Logic>
     {
         internal Scenario scenario;
 
-        public Logic()
+        public void StartScenario()
         {
+            scenario = new TestScenario();
+            scenario.StartScenario();
         }
 
         /// <summary>
@@ -35,7 +37,6 @@ namespace LogicScripts
         /// INFO MESSAGE:  string Text - сообщение, string nameOk - имя метода при нажатии ОК 
         /// OUTLINE: string name - имя точки в массиве ObjDictianory, string message - сообщение на точке, params string[] param
         /// </summary>
-        /// <param name="messageType">Тип оправляемой команды</param>
         /// <param name="parameters"></param> 
         internal void SendCommand(params object[] parameters)
         {
@@ -43,7 +44,7 @@ namespace LogicScripts
             {
                 case CommandType.Dialog:
                 case CommandType.InfoMessage:
-                    Dialog.Instance.Activate(parameters);
+                    //Dialog.Instance.Activate(parameters);
                     break;
 
                 case CommandType.Outline:
@@ -57,7 +58,6 @@ namespace LogicScripts
                 case CommandType.PlayAudio:
                     SceneOrganizer.Instance.PlayAudio(parameters);
                     break;
-
             }
         }
     }

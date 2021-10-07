@@ -8,6 +8,7 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using Visualization;
 
 public class ScrollList : MonoBehaviour, IFeatureInterface
 {
@@ -252,7 +253,7 @@ public class ScrollList : MonoBehaviour, IFeatureInterface
     {
         var offset = 1;
         DescriptionText = vs[0].ToString();
-        if (vs.Length - offset % 2 == 0) { parent = Data.Instance.GetBaseHologramObject(vs[vs.Length - 1].ToString()); }
+        if (vs.Length - offset % 2 == 0) { parent = Data.Instance.GetHologramObject(vs[vs.Length - 1].ToString()); }
         var items = parent == null ? vs.Length - offset : vs.Length - offset - 1;
         buttonNames = new string[items];
         for (var i = 0; i < buttonNames.Length; i++)
@@ -277,7 +278,7 @@ public class ScrollList : MonoBehaviour, IFeatureInterface
             return;
         }
         parent.ToolTip.gameObject.SetActive(false);
-        HologramController.Instance.HologramObjectsSmoothAlpha.SetInvisible(parent);
+        SmoothAlphaVisualizer.Instance.SetInvisible(parent);
     }
     private IEnumerator Waiting(Vector3 target)
     {

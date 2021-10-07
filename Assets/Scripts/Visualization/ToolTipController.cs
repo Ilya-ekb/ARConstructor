@@ -36,20 +36,21 @@ namespace Visualization
                 return;
             }
 
-            if (childVisualizer && currentVisibleCondition == VisibleCondition.Visible)
-            {
-                TooltipVisualizer.Instance.Decorate(childVisualizer, childVisualizer.VisualSettings);
-            }
 
             foreach (var hologram in objectCreator.ContainedBaseHologramObjects)
             {
                 if (currentVisibleCondition == VisibleCondition.Visible)
                 {
-                    TooltipVisualizer.Instance.SetVisible(hologram, TooltipVisualizer.Instance.VisualSettings);
+                    if (childVisualizer)
+                    {
+                        TooltipVisualizer.Instance.Decorate(childVisualizer, hologram as IVisibleObject, default(ITooltipSettings));
+                    }
+
+                    TooltipVisualizer.Instance.SetVisible(hologram);
                 }
                 else
                 {
-                    TooltipVisualizer.Instance.SetInvisible(hologram, TooltipVisualizer.Instance.VisualSettings);
+                    TooltipVisualizer.Instance.SetInvisible(hologram);
                 }
             }
         }

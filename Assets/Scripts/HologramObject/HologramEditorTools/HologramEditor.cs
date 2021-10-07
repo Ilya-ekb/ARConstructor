@@ -37,7 +37,7 @@ public class HologramEditor : InputActionHandler
     {
         StartSettings();
         ResetStateAll();
-        Data.ObjectFeaturePanelControl.CallFor(this);
+        //Data.ObjectFeaturePanelControl.CallFor(this);
         enabled = false;
     }
 
@@ -73,7 +73,7 @@ public class HologramEditor : InputActionHandler
     /// </summary>
     public static void ResetStateAll()
     {
-        Data.ObjectFeaturePanelControl.gameObject.SetActive(false);
+        //Data.ObjectFeaturePanelControl.gameObject.SetActive(false);
         foreach (var obj in Data.Instance.AllBaseHologramObjects)
         {
             if (obj == null)

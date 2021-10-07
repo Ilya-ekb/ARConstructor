@@ -54,6 +54,10 @@ namespace MRTK
 
         private void OnEnable()
         {
+            if (loaderPrefab == null)
+            {
+                loaderPrefab = Resources.Load(resourcePath);
+            }
             if (baseInputHandler == null)
             {
                 return;
@@ -79,8 +83,6 @@ namespace MRTK
 
         public IBaseHologramObject RestoreHologramObjectEvent(Memo memo)
         {
-            loaderPrefab = Resources.Load(resourcePath);
-
             if (memo == null)
             {
                 return null;
@@ -104,7 +106,7 @@ namespace MRTK
                 eventData.InputSource.Pointers[0].BaseCursor.Rotation,
                 creatingObjectPrefab.transform.localScale);
 
-            var hologramData = new HologramData(creatingObjectPrefab.name, null, spatialData);
+            var hologramData = new HologramData(creatingObjectPrefab.name, null, "NoName",spatialData);
 
             CreateObject(hologramData);
         }
@@ -118,9 +120,9 @@ namespace MRTK
 
         private IBaseHologramObject CreateObject(HologramData hologramData)
         {
-            if (creatingObjectPrefab == null)
+            if (loaderPrefab == null)
             {
-                return null;
+                loaderPrefab = Resources.Load(resourcePath);
             }
 
             var gameObject = (GameObject)Instantiate(loaderPrefab);
@@ -131,20 +133,20 @@ namespace MRTK
 
             var rendererData = new RendererData(renderer, color);
 
-            hologramData = new HologramData(hologramData.PrefabName, hologramData.Id, hologramData.SpatialData, rendererData);
+            hologramData = new HologramData(hologramData.PrefabName, hologramData.Id, hologramData.HologramName, hologramData.SpatialData, rendererData);
 
             var baseHologram = gameObject.GetComponent<IBaseHologramObject>();
 
             baseHologram.UpdateObject(hologramData);
 
             containedObjectsId.Add(baseHologram.HologramData.Id);
-            Data.Instance.AddNewBaseHologramObject(baseHologram);
-            return Data.Instance.GetBaseHologramObject(baseHologram.HologramData.Id);
+            Data.Instance.AddHologramObject(baseHologram);
+            return Data.Instance.GetHologramObject(baseHologram.HologramData.Id);
         }
 
         private void DeleteObject(string id)
         {
-            if (string.IsNullOrEmpty(id) || Data.Instance.GetBaseHologramObject(id) == null)
+            if (string.IsNullOrEmpty(id) || Data.Instance.GetHologramObject(id) == null)
             {
                 return;
             }

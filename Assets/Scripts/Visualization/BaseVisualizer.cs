@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DataScripts;
 using Main;
 using UnityEngine;
@@ -9,15 +10,33 @@ namespace Visualization
     public abstract class BaseVisualizer<TSettings> : Singleton<BaseVisualizer<TSettings>>, IVisualizer where TSettings : IVisualSettings
     {
         public IVisualizer Visualizer { get; private set; }
+        protected abstract TSettings staticVisualSettings { get; }
 
-        public IVisualSettings VisualSettings => visualSettings;
+        private readonly Dictionary<IVisibleObject, TSettings> settingsMap = new Dictionary<IVisibleObject, TSettings>();
 
-        protected abstract IVisualSettings visualSettings { get; set; }
+        protected virtual TSettings GetVisualSettings(IVisibleObject visibleObject)
+        {
+            return settingsMap.ContainsKey(visibleObject) ? settingsMap[visibleObject] : staticVisualSettings;
+        }
 
-        public void Decorate<T>(IVisualizer visualizer, T settings) where T : IVisualSettings
+        public virtual void SetVisualSettings(IVisibleObject visibleObject, IVisualSettings settings = null)
+        {
+            var resultSettings = settings == null ? staticVisualSettings : (TSettings)settings;
+
+            if (settingsMap.ContainsKey(visibleObject))
+            {
+                settingsMap[visibleObject] = resultSettings;
+            }
+            else
+            {
+                settingsMap.Add(visibleObject, resultSettings);
+            }
+        }
+
+        public void Decorate<T>(IVisualizer visualizer, IVisibleObject visibleObject, T settings = default) where T : IVisualSettings
         {
             Visualizer = visualizer;
-            Visualizer?.SetVisualSettings(settings);
+            Visualizer?.SetVisualSettings(visibleObject, settings);
         }
 
         public void SetVisible(object visibleObject, IVisualSettings visualSettings = null)
@@ -27,7 +46,12 @@ namespace Visualization
                 return;
             }
 
-            vObject.SetVisualSettings(visualSettings ?? VisualSettings);
+            if (visualSettings != null)
+            {
+                SetVisualSettings(vObject, visualSettings);
+            }
+
+            vObject.SetVisualSettings(GetVisualSettings(vObject));
 
             vObject.VisibleCondition = VisibleCondition.Process;
             vObject.VisualizationAction -= TurnOffVisualization;
@@ -41,7 +65,7 @@ namespace Visualization
                 return;
             }
 
-            vObject.SetVisualSettings(visualSettings ?? VisualSettings);
+            vObject.SetVisualSettings(GetVisualSettings(vObject));
 
             vObject.VisibleCondition = VisibleCondition.Process;
             vObject.VisualizationAction -= TurnOnVisualization;
@@ -59,7 +83,6 @@ namespace Visualization
                 }
             }
         }
-        public abstract void SetVisualSettings(IVisualSettings settings);
 
         protected virtual void TurnOnVisualization(IVisibleObject visibleObject, IVisualSettings visualSettings)
         {

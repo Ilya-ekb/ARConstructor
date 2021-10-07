@@ -17,6 +17,7 @@ namespace HologramObject
         public Action<IVisibleObject, IVisualSettings> VisualizationAction { get; set; }
         public IVisualSettings VisualSettings { get; private set; }
 
+        [SerializeField] private string hologramName;
         private HologramData hologramData;
 
         public void UpdateObject(HologramData data)
@@ -34,7 +35,7 @@ namespace HologramObject
         public void UpdateData()
         {
             var hologramRenderer = GetComponentInParent<Renderer>();
-            hologramData = new HologramData(hologramData.PrefabName, hologramData.Id,
+            hologramData = new HologramData(hologramData.PrefabName, hologramData.Id, hologramName,
                 new SpatialData(transform.position, transform.rotation, transform.localScale),
                 new RendererData(hologramRenderer, hologramRenderer.material.color));
             Editor ??= GetComponent<HologramEditor>() ?? gameObject.AddComponent<HologramEditor>();

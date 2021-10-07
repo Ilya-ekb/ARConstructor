@@ -6,6 +6,7 @@ public struct HologramData
 {
     public string Id { get; }
     public string PrefabName { get; }
+    public string HologramName { get; }
     public SpatialData SpatialData { get; }
     public RendererData RendererData { get; }
 
@@ -13,6 +14,7 @@ public struct HologramData
     {
         Id = memo.Id;
         PrefabName = memo.Name;
+        HologramName = memo.HologramName;
         SpatialData = new SpatialData(
             new Vector3(memo.PosX, memo.PosY, memo.PosZ),
             Quaternion.Euler(memo.RotX, memo.RotY, memo.RotZ),
@@ -21,10 +23,11 @@ public struct HologramData
             new Color(memo.ColorR, memo.ColorG, memo.ColorB, memo.ColorA));
     }
 
-    public HologramData(string prefabName, string id = null, SpatialData spatialData = default, RendererData rendererData = default)
+    public HologramData(string prefabName, string id = null, string hologramName = "NoName", SpatialData spatialData = default, RendererData rendererData = default)
     {
         Id = string.IsNullOrEmpty(id) ? Guid.NewGuid().ToString() : id;
         PrefabName = prefabName;
+        HologramName = hologramName;
         SpatialData = spatialData;
         RendererData = rendererData;
     }

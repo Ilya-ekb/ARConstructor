@@ -8,10 +8,10 @@ using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using TMPro;
 using UnityEngine;
+using Visualization;
 
-public class Dialog : MonoBehaviour
+public class Dialog : Singleton<Dialog>
 {
-    internal static Dialog Instance { get; private set; }
     [SerializeField] private SpriteRenderer imageIn;
     [SerializeField] private SpriteRenderer imageOut;
     internal Transform Transform { get; set; }
@@ -115,7 +115,7 @@ public class Dialog : MonoBehaviour
     {
         var command = (type == ButtonType.ButtonYes || type == ButtonType.ButtonOk) ? nameYesCommand : nameNoCommand;
         Deactivate();
-        Data.Logic.InvokeFunction(command, parameters);
+        Logic.Instance.InvokeFunction(command, parameters);
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class Dialog : MonoBehaviour
         //≈сли есть парент - запускаем анимацию исчезновени€
         if (parent != null)
         {
-            HologramController.Instance.HologramObjectsSmoothAlpha.SetInvisible(parent);
+            SmoothAlphaVisualizer.Instance.SetInvisible(parent);
         }
     }
 
@@ -193,7 +193,6 @@ public class Dialog : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
         Transform = gameObject.transform;
 
         radial = GetComponent<RadialView>();
