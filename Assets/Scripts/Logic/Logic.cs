@@ -44,7 +44,7 @@ namespace LogicScripts
             {
                 case CommandType.Dialog:
                 case CommandType.InfoMessage:
-                    //Dialog.Instance.Activate(parameters);
+                    Dialog.Instance.Activate(parameters);
                     break;
 
                 case CommandType.Outline:

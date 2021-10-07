@@ -12,8 +12,6 @@ using Visualization;
 
 public class Dialog : Singleton<Dialog>
 {
-    [SerializeField] private SpriteRenderer imageIn;
-    [SerializeField] private SpriteRenderer imageOut;
     internal Transform Transform { get; set; }
     private Coroutine animationCor = null;
     private RadialView radial = null;
@@ -42,8 +40,6 @@ public class Dialog : Singleton<Dialog>
     public void Activate(params object[] objects)
     {
         Vector3 scale = Vector3.one * .4f;
-        imageIn.sprite = null;
-        imageOut.sprite = null;
         if (objects.Length > 0)
         {
             //Общие настройки
@@ -60,11 +56,9 @@ public class Dialog : Singleton<Dialog>
             else if (type == CommandType.InfoMessage)
             {
                 Find(aButton, e => (ButtonType)Enum.Parse(typeof(ButtonType), e.name) == ButtonType.ButtonOk);
-                imageIn.sprite = TryParseImageNo(3, objects);
             }
 
             TryParseScale(4, objects, ref scale);
-            imageOut.sprite = TryParseImageNo(5, objects);
 
             try
             {
