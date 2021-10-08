@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataScripts;
-
+using LogicScripts;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using TMPro;
@@ -309,26 +309,26 @@ public class ScrollList : MonoBehaviour, IFeatureInterface
         }
     }
 
-    object[] objects = new object[1];
+    readonly object[] objects = new object[1];
     private void MakeItem(GameObject item, string buttonName, string funcName = "")
     {
         GameObject itemInstance = Instantiate(item, gridObjectCollection.transform);
-        //if (item.GetComponent<ID_Editor>() != null)
-        //{
+        if (item.GetComponent<IDEditor>() != null)
+        {
 
-        //    var id_editor = item.GetComponent<ID_Editor>();
-        //    id_editor.ID_Label = buttonName;
-        //}
-        //else
-        //{
-        //    var buttonHelper = itemInstance.GetComponent<ButtonConfigHelper>();
-        //    buttonHelper.MainLabelText = buttonName;
-        //    buttonHelper.OnClick.AddListener(() =>
-        //    {
-        //        Data.Logic.InvokeFunction(funcName, objects);
-        //        Deactive();
-        //    });
-        //}
-        //itemInstance.SetActive(true);
+            var id_editor = item.GetComponent<IDEditor>();
+            id_editor.ID_Label = buttonName;
+        }
+        else
+        {
+            var buttonHelper = itemInstance.GetComponent<ButtonConfigHelper>();
+            buttonHelper.MainLabelText = buttonName;
+            buttonHelper.OnClick.AddListener(() =>
+            {
+                Logic.Instance.InvokeFunction(funcName, objects);
+                Deactive();
+            });
+        }
+        itemInstance.SetActive(true);
     }
 }

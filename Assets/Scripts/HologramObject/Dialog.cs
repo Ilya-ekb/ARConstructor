@@ -15,7 +15,7 @@ public class Dialog : Singleton<Dialog>
     internal Transform Transform { get; set; }
     private Coroutine animationCor = null;
     private RadialView radial = null;
-    private IBaseHologramObject parent = null;
+    private IBaseHologramObject[] parent = null;
 
 
     private Dictionary<ButtonType, Interactable> aButton;
@@ -62,7 +62,7 @@ public class Dialog : Singleton<Dialog>
 
             try
             {
-                parent = objects[objects.Length - 1] != default ? (IBaseHologramObject)objects[objects.Length - 1] : null;
+                parent = objects[objects.Length - 1] != default ? (IBaseHologramObject[])objects[objects.Length - 1] : null;
             }
             catch
             {
@@ -120,9 +120,10 @@ public class Dialog : Singleton<Dialog>
         foreach (var button in aButton.Values) button.gameObject.SetActive(false);
         StartAnimation(Vector3.zero, false);
         //≈сли есть парент - запускаем анимацию исчезновени€
-        if (parent != null)
+        if (parent == null || parent.Length <= 0) return;
+        foreach (var hologramObject in parent)
         {
-            SmoothAlphaVisualizer.Instance.SetInvisible(parent);
+            SmoothAlphaVisualizer.Instance.SetInvisible(hologramObject);
         }
     }
 

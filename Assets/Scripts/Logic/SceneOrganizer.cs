@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using DataScripts;
+using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
-using Serialization;
-
 using Storage;
-
 using UnityEngine;
 using Visualization;
 
@@ -68,9 +63,33 @@ namespace LogicScripts
             }
 
             var hologramObject = allHolograms[(int)vs[1]];
-            var tooltipSettings = new DynamicTooltipSettings(vs[2].ToString());
-           
-            SmoothAlphaVisualizer.Instance.Decorate(TooltipVisualizer.Instance, hologramObject as IVisibleObject, tooltipSettings);
+            if (!string.IsNullOrEmpty(vs[2].ToString()))
+            {
+                var tooltipSettings = new DynamicTooltipSettings(vs[2].ToString());
+                if (vs.Length > 3)
+                {
+                    tooltipSettings = new DynamicTooltipSettings(
+                        vs[2].ToString(),
+                        (bool) vs[3],
+                        (ConnectorOrientType) vs[4],
+                        (ConnectorFollowType) vs[5],
+                        (ConnectorPivotMode) vs[6],
+                        (ConnectorPivotDirection) vs[7],
+                        (float) vs[8]);
+                }
+
+                if (vs.Length > 9)
+                {
+                    var touchEvent = hologramObject.GameObject.GetComponent<HologramObject.TouchEvent>();
+                    if (touchEvent != null )
+                    {
+                        touchEvent.OnTouchEvent.RemoveAllListeners();
+                        touchEvent.OnTouchEvent.AddListener(() => touchEvent.InvokeScenarioMethod(vs[9].ToString()));
+                    }
+                }
+                SmoothAlphaVisualizer.Instance.Decorate(TooltipVisualizer.Instance, hologramObject as IVisibleObject, tooltipSettings);
+            }
+
             SmoothAlphaVisualizer.Instance.SetVisible(hologramObject);
         }
 
@@ -83,7 +102,8 @@ namespace LogicScripts
             if (vs.Length > 0)
             {
                 int offset = 1;
-                scrollList = Instantiate(Data.Instance.scrollObject).GetComponent<ScrollList>();
+
+                scrollList = Instantiate(Data.Instance.ScrollObject).GetComponent<ScrollList>();
                 var radial = scrollList.gameObject.GetComponent<RadialView>();
                 radial.MaxViewDegrees = 10.0f;
                 scrollList.gameObject.transform.localScale = Vector3.zero;

@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1786197352863324974}
   - component: {fileID: 1786197352863324983}
   - component: {fileID: 5779288551844238628}
+  - component: {fileID: 3061914415480061722}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -95,7 +96,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786197352863324969}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -325,5 +326,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   onHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  hologramName: 
+--- !u!114 &3061914415480061722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786197352863324969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f972ae987f1d7f419000cadbc337671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTouchEvent:
     m_PersistentCalls:
       m_Calls: []

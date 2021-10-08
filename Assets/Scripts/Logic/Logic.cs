@@ -9,12 +9,12 @@ namespace LogicScripts
 {
     public class Logic : Singleton<Logic>
     {
-        internal Scenario scenario;
+        internal Scenario Scenario;
 
         public void StartScenario()
         {
-            scenario = new TestScenario();
-            scenario.StartScenario();
+            Scenario = new TestScenario();
+            Scenario.StartScenario();
         }
 
         /// <summary>
@@ -24,9 +24,9 @@ namespace LogicScripts
         /// <param name="parameters"></param>Параметры для вызываемой функции
         public void InvokeFunction(string method, object[] parameters)
         {
-            Type scenarioType = scenario.GetType();
+            Type scenarioType = Scenario.GetType();
             MethodInfo scenarioMethod = scenarioType.GetMethod(method);
-            scenarioMethod.Invoke(scenario, parameters);
+            scenarioMethod.Invoke(Scenario, parameters);
         }
 
 

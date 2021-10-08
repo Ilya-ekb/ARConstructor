@@ -19,7 +19,7 @@ namespace DataScripts
 
         public static int ID { get; private set; } = 0;
 
-        public GameObject scrollObject;
+        public GameObject ScrollObject;
         public AudioClip[] audioClips;
         public Sprite[] images;
 
